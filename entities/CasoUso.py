@@ -1,6 +1,5 @@
 from exceptions.ErrorLaboratorio import ErrorLaboratorio
 
-
 class CasoUso:
     def __init__(self, codigo, nombre, presupuesto, puntaje_minimo):
         self.__codigo = codigo
@@ -41,15 +40,3 @@ class CasoUso:
         if not isinstance(valor, (int, float)) or valor < 0 or valor > 10:
             raise ErrorLaboratorio("El puntaje mínimo debe estar entre 0 y 10.")
         self.__puntaje_minimo = valor
-
-    def __str__(self):
-        return (
-            "Código: "
-            + str(self.__codigo)
-            + " | Nombre: "
-            + self.__nombre
-            + " | Presupuesto: "
-            + str(self.__presupuesto)
-            + " | Puntaje mínimo: "
-            + str(self.__puntaje_minimo)
-        )
