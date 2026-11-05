@@ -174,3 +174,85 @@ class Sistema:
             nuevas.append(evaluacion)
 
         return nuevas
+
+    def recalcular(self):
+        for evaluacion in self.__evaluaciones:
+            evaluacion.actualizar_estado()
+
+    def actualizar_presupuesto(self, codigo_caso, nuevo_presupuesto):
+        caso = self.buscar_caso(codigo_caso)
+        caso.presupuesto = nuevo_presupuesto
+        self.recalcular()
+        return caso
+
+    def actualizar_servicio_api(
+        self, codigo_opcion, costo_por_1000, consultas_estimadas
+    ):
+        opcion = self.buscar_opcion(codigo_opcion)
+        if not isinstance(opcion, ServicioAPI):
+            raise ErrorLaboratorio("La opcion seleccionada no es un Servicio API.")
+
+        costo_anterior = opcion.costo_por_1000
+        consultas_anteriores = opcion.consultas_estimadas
+        try:
+            opcion.costo_por_1000 = costo_por_1000
+            opcion.consultas_estimadas = consultas_estimadas
+        except ErrorLaboratorio:
+            opcion.costo_por_1000 = costo_anterior
+            opcion.consultas_estimadas = consultas_anteriores
+            raise
+
+    def actualizar_plan_mensual(self, codigo_opcion, usuarios, costo_por_usuario):
+        opcion = self.buscar_opcion(codigo_opcion)
+        if not isinstance(opcion, PlanMensual):
+            raise ErrorLaboratorio("La opción seleccionada no es un Plan mensual.")
+
+        usuarios_anterior = opcion.usuarios
+        costo_anterior = opcion.costo_por_usuario
+        try:
+            opcion.usuarios = usuarios
+            opcion.costo_por_usuario = costo_por_usuario
+        except ErrorLaboratorio:
+            opcion.usuarios = usuarios_anterior
+            opcion.costo_por_usuario = costo_anterior
+            raise
+        self.recalcular()
+        return opcion
+
+    def evaluaciones_de_caso(self, codigo_caso):
+        caso = self.buscar_caso(codigo_caso)
+        resultado = []
+        for evaluacion in self.__evaluaciones:
+            if evaluacion.caso.codigo == caso.codigo:
+                resultado.append(evaluacion)
+        return resultado
+
+    def cantidad_recomendadas(self, codigo_caso):
+        contador = 0
+        for evaluacion in self.evaluaciones_de_caso(codigo_caso):
+            if evaluacion.estado == "Recomendada":
+                contador = contador + 1
+        return contador
+
+    def __clave_ranking(self, evaluacion):
+        return (
+            -evaluacion.puntaje_total(),
+            evaluacion.costo_total(),
+            evaluacion.opcion.codigo,
+        )
+
+    def ranking_de_caso(self, codigo_caso):
+        recomendadas = []
+        for evaluacion in self.evaluaciones_de_caso(codigo_caso):
+            if evaluacion.estado == "Recomendada":
+                recomendadas.append(evaluacion)
+        return sorted(recomendadas, key=self.__clave_ranking)
+
+    def existe_criterio(self, nombre):
+        return self.__existe_nombre(self.__criterios, nombre)
+
+    def existe_opcion(self, nombre):
+        return self.__existe_nombre(self.__opciones, nombre)
+
+    def existe_caso(self, nombre):
+        return self.__existe_nombre(self.__casos, nombre)
