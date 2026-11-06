@@ -202,6 +202,9 @@ class Sistema:
             opcion.consultas_estimadas = consultas_anteriores
             raise
 
+        self.recalcular()
+        return opcion
+    
     def actualizar_plan_mensual(self, codigo_opcion, usuarios, costo_por_usuario):
         opcion = self.buscar_opcion(codigo_opcion)
         if not isinstance(opcion, PlanMensual):

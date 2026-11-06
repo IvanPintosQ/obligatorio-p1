@@ -2,8 +2,8 @@ from entities.Sistema import Sistema
 from entities.OpcionIA import ServicioAPI
 from exceptions.ErrorLaboratorio import ErrorLaboratorio
 
-
 ##Funciones para pedir datos
+
 
 def pedir_texto(mensaje):
     valido = False
@@ -53,6 +53,7 @@ def pedir_decimal(mensaje, minimo, maximo=None):
 
 ##Funciones para elegir un caso o una opción
 
+
 def elegir_caso(sistema):
     if len(sistema.casos) == 0:
         print("No hay casos de uso registrados.")
@@ -89,10 +90,13 @@ def elegir_opcion(sistema):
 
 ##Registrar
 
+
 def registrar_criterio(sistema):
     print("Registrar criterio")
     if len(sistema.opciones) > 0:
-        print("No se pueden registrar criterios después de registrar la primera opción.")
+        print(
+            "No se pueden registrar criterios después de registrar la primera opción."
+        )
         return
 
     nombre = ""
@@ -199,6 +203,7 @@ def registrar_evaluacion_individual(sistema):
 
 ##Comparar
 
+
 def comparar_opciones(sistema):
     print("\n-- Comparar opciones para un caso --")
     caso = elegir_caso(sistema)
@@ -214,6 +219,7 @@ def comparar_opciones(sistema):
 
 
 ##Actualizar
+
 
 def actualizar_presupuesto_caso(sistema):
     print("Actualizar presupuesto de un caso")
@@ -254,7 +260,8 @@ def actualizar_opcion(sistema):
         print("Error:", e)
 
 
-#"Listar
+# "Listar
+
 
 def listar_criterios(sistema):
     print("\n-- Criterios --")
@@ -274,7 +281,9 @@ def listar_opciones(sistema):
         print(opcion)
         print("   Costo mensual:", opcion.costo_estimado())
         for criterio in sistema.criterios:
-            print("   " + criterio.nombre + ": " + str(opcion.puntajes[criterio.codigo]))
+            print(
+                "   " + criterio.nombre + ": " + str(opcion.puntajes[criterio.codigo])
+            )
 
 
 def listar_casos(sistema):
@@ -299,12 +308,18 @@ def listar_evaluaciones(sistema):
     for ev in evaluaciones:
         print(
             str(ev.codigo)
-            + " | " + ev.fecha.strftime("%d/%m/%Y %H:%M")
-            + " | " + ev.opcion.nombre
-            + " | Presupuesto del caso: " + str(ev.caso.presupuesto)
-            + " | Costo: " + str(ev.costo_total())
-            + " | Puntaje: " + format(ev.puntaje_total(), ".2f")
-            + " | Estado: " + ev.estado
+            + " | "
+            + ev.fecha.strftime("%d/%m/%Y %H:%M")
+            + " | "
+            + ev.opcion.nombre
+            + " | Presupuesto del caso: "
+            + str(ev.caso.presupuesto)
+            + " | Costo: "
+            + str(ev.costo_total())
+            + " | Puntaje: "
+            + format(ev.puntaje_total(), ".2f")
+            + " | Estado: "
+            + ev.estado
         )
 
 
@@ -321,14 +336,18 @@ def listar_ranking(sistema):
     for ev in ranking:
         print(
             str(posicion)
-            + ". " + ev.opcion.nombre
-            + " | Puntaje: " + format(ev.puntaje_total(), ".2f")
-            + " | Costo: " + str(ev.costo_total())
+            + ". "
+            + ev.opcion.nombre
+            + " | Puntaje: "
+            + format(ev.puntaje_total(), ".2f")
+            + " | Costo: "
+            + str(ev.costo_total())
         )
         posicion = posicion + 1
 
 
 ##Menús
+
 
 def menu_registrar(sistema):
     salir = False
