@@ -55,3 +55,15 @@ class Evaluacion():
             self.__estado = "Puntaje insuficiente"
         else:
             self.__estado = "Recomendada"
+
+
+    def __str__(self):
+        return (
+            "Evaluación " + str(self.__codigo)
+            + " | Fecha: " + self.__fecha.strftime("%d/%m/%Y %H:%M")
+            + " | Opción: " + self.__opcion.nombre
+            + " | Caso: " + self.__caso.nombre
+            + " | Puntaje: " + format(self.puntaje_total(), ".2f")
+            + " | Costo: " + str(self.costo_total())
+            + " | Estado: " + self.__estado
+        )
