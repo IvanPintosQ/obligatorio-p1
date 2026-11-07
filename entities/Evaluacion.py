@@ -44,9 +44,12 @@ class Evaluacion():
         return suma_ponderada / suma_pesos
 
     def actualizar_estado(self):
-        costo = self.costo_total()
+        # Los montos se comparan redondeados a centavos: con decimales, Python
+        # puede calcular 3 * 0.1 como 0.30000000000000004, y un costo igual
+        # al presupuesto quedaría "Fuera de presupuesto" cuando es válido.
+        costo = round(self.costo_total(), 2)
         puntaje = self.puntaje_total()
-        presupuesto = self.__caso.presupuesto
+        presupuesto = round(self.__caso.presupuesto, 2)
         minimo = self.__caso.puntaje_minimo
 
         if costo > presupuesto:
