@@ -439,4 +439,5 @@ def main():
     print("Hasta luego.")
 
 
-main()
+if __name__ == "__main__":
+    main()
