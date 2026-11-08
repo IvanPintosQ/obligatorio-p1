@@ -40,7 +40,7 @@ def pedir_decimal(mensaje, minimo, maximo=None):
         texto = input(mensaje).strip().replace(",", ".")
         try:
             numero = float(texto)
-            # float() acepta "nan", y NaN es el único valor distinto de sí mismo.
+
             if numero != numero:
                 print("Debe ingresar un número.")
             elif numero < minimo:
